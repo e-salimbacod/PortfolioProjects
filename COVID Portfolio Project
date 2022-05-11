@@ -68,19 +68,12 @@ JOIN `buoyant-striker-349220.covid_data.vaccinations` as vac
   and dea.date = vac.date
 WHERE dea.continent is not null
 
-
-
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, 
-SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) as TotalVaccinated,
-(SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date)/population)*100 as VacPercent
+SUM(vac.new_vaccinations) OVER (Partition by dea.location ORDER BY dea.location, dea.date) as TotalVaccinated,
+((SUM(vac.new_vaccinations) OVER (Partition by dea.location ORDER BY dea.location, dea.date))/population)*100 as PopVacPercent
 FROM `buoyant-striker-349220.covid_data.deaths`as dea
 JOIN `buoyant-striker-349220.covid_data.vaccinations` as vac
   ON dea.location = vac.location
   and dea.date = vac.date
 WHERE dea.continent is not null
 ORDER BY 2,3
-
-
-
-
-  
